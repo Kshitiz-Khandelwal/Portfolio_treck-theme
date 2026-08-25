@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { projectCaseStudies, ProjectCaseStudy } from "@/data/projects";
 import { ProjectCaseStudyModal } from "./ProjectCaseStudyModal";
-import { FileText, ArrowRight, Shield, Lock, Activity, HeartPulse, Building, ChevronLeft, ChevronRight } from "lucide-react";
+import { FileText, ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 
 interface ProjectDisplayCard {
   id: string;
@@ -31,8 +31,9 @@ interface ProjectDisplayCard {
 export function HorizontalProjectRail() {
   const [selectedProject, setSelectedProject] = useState<ProjectCaseStudy | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>("ALL");
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  // Map 5 project cards exactly matching the reference image layout and metadata
+  // Map 5 project cards exactly matching the reference image metadata
   const cards: ProjectDisplayCard[] = [
     {
       id: "dns-shield",
@@ -162,12 +163,21 @@ export function HorizontalProjectRail() {
           return true;
         });
 
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === "left" ? -360 : 360;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
   return (
-    <section id="projects" className="py-16 px-4 sm:px-6 max-w-[1400px] mx-auto">
+    <section id="projects" className="py-16 px-4 sm:px-6 max-w-[1450px] mx-auto">
       {/* Section Top Tagline & Main Title */}
       <div className="flex flex-col items-center text-center mb-8">
-        <span className="font-mono text-xs sm:text-sm font-bold tracking-[0.25em] uppercase text-[#D4BAA3]/80 mb-3">
-          · DEFENSIBLE ARCHITECTURES ·
+        <span className="font-mono text-xs sm:text-sm font-bold tracking-[0.25em] uppercase text-[#D4BAA3]/80 mb-3 flex items-center gap-2">
+          <span>·</span>
+          <span>DEFENSIBLE ARCHITECTURES</span>
+          <span>·</span>
         </span>
         <h2 className="font-bree text-4xl sm:text-5xl md:text-6xl text-[#F5E1CD] font-bold tracking-tight mb-3">
           Featured Systems &amp; Projects
@@ -176,141 +186,152 @@ export function HorizontalProjectRail() {
           Click &apos;Inspect Case Study&apos; to deep dive any project module and explore the architecture, research &amp; impact.
         </p>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 mt-6">
-          {[
-            { id: "ALL", label: "All Systems (5)" },
-            { id: "cybersecurity", label: "Cybersecurity & Threat Intel" },
-            { id: "ai-systems", label: "Edge AI & Healthcare Systems" },
-            { id: "full-stack", label: "High Throughput Web & CI/CD" },
-            { id: "research", label: "Distributed Architectures" },
-          ].map((tab) => (
+        {/* Filter Pills & Scroll Controls */}
+        <div className="flex flex-wrap items-center justify-between w-full max-w-5xl gap-4 mt-8 px-2">
+          {/* Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { id: "ALL", label: "All Systems (5)" },
+              { id: "cybersecurity", label: "Cybersecurity & Threat Intel" },
+              { id: "ai-systems", label: "Edge AI & Healthcare Systems" },
+              { id: "full-stack", label: "High Throughput Web & CI/CD" },
+              { id: "research", label: "Distributed Architectures" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveFilter(tab.id)}
+                className={`px-4 py-2 rounded-full font-sans text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                  activeFilter === tab.id
+                    ? "bg-[#E25543] text-white shadow-[0_0_15px_rgba(226,85,67,0.4)]"
+                    : "bg-transparent text-[#D4BAA3] border border-[#F5E1CD]/25 hover:border-[#F5E1CD]/50 hover:bg-[#F5E1CD]/10"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Interactive Scroll Navigation Arrows */}
+          <div className="flex items-center gap-2">
             <button
-              key={tab.id}
-              onClick={() => setActiveFilter(tab.id)}
-              className={`px-4 py-2 rounded-full font-sans text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                activeFilter === tab.id
-                  ? "bg-[#E25543] text-white shadow-[0_0_15px_rgba(226,85,67,0.4)]"
-                  : "bg-transparent text-[#D4BAA3] border border-[#F5E1CD]/25 hover:border-[#F5E1CD]/50 hover:bg-[#F5E1CD]/10"
-              }`}
+              onClick={() => scroll("left")}
+              className="p-2.5 rounded-full bg-[#2B2015]/60 text-[#F5E1CD] border border-[#F5E1CD]/20 hover:bg-[#E25543] hover:text-white transition-all cursor-pointer shadow-md"
+              title="Scroll Left"
             >
-              {tab.label}
+              <ChevronLeft className="w-4 h-4" />
             </button>
-          ))}
+            <button
+              onClick={() => scroll("right")}
+              className="p-2.5 rounded-full bg-[#2B2015]/60 text-[#F5E1CD] border border-[#F5E1CD]/20 hover:bg-[#E25543] hover:text-white transition-all cursor-pointer shadow-md"
+              title="Scroll Right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Blueprint Framed Box Container */}
-      <div className="relative border border-[#F5E1CD]/20 rounded-[28px] bg-[#171615]/80 p-5 sm:p-7 backdrop-blur-sm shadow-2xl">
-        {/* Top Horizontal Arrow Line */}
-        <div className="flex items-center justify-between text-[#F5E1CD]/30 text-xs font-mono mb-6 px-2 select-none">
-          <span>&lt;</span>
-          <div className="h-[1px] bg-gradient-to-r from-[#F5E1CD]/10 via-[#F5E1CD]/30 to-[#F5E1CD]/10 flex-1 mx-3" />
-          <span>&gt;</span>
-        </div>
-
-        {/* Corner Glowing Pins/Crosshairs */}
-        <div className="absolute -top-2 -left-2 text-[#E25543] text-base font-mono">✦</div>
-        <div className="absolute -top-2 -right-2 text-[#E25543] text-base font-mono">✦</div>
-        <div className="absolute -bottom-2 -left-2 text-[#E25543] text-base font-mono">✦</div>
-        <div className="absolute -bottom-2 -right-2 text-[#E25543] text-base font-mono">✦</div>
-
-        {/* 5 Cards Horizontal Grid / Rail */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 overflow-x-auto pb-2">
-          {filteredCards.map((card) => (
+      {/* Smooth Animated Horizontal Cards Scroll Rail */}
+      <div
+        ref={scrollRef}
+        className="flex gap-5 overflow-x-auto pb-8 pt-4 px-2 scrollbar-none scroll-smooth snap-x snap-mandatory"
+      >
+        {filteredCards.map((card, idx) => (
+          <div
+            key={card.id}
+            className="w-full sm:w-[320px] md:w-[335px] shrink-0 snap-start bg-[#F5E1CD] text-[#2B2015] border-[3px] border-[#2B2015] rounded-[24px] p-5 flex flex-col justify-between relative shadow-[5px_5px_0px_#2B2015] transition-all duration-300 hover:-translate-y-2 hover:rotate-1 hover:shadow-[9px_9px_0px_#2B2015] group min-h-[530px]"
+            style={{
+              animationDelay: `${idx * 120}ms`,
+            }}
+          >
+            {/* Top Washi Tape */}
             <div
-              key={card.id}
-              className="bg-[#F5E1CD] text-[#2B2015] border-[3px] border-[#2B2015] rounded-[22px] p-5 flex flex-col justify-between relative shadow-[4px_4px_0px_#2B2015] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#2B2015] group min-h-[520px]"
-            >
-              {/* Top Washi Tape */}
-              <div
-                className={`absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-4 ${card.tapeBg} rounded-sm rotate-[-2deg] z-10 border border-[#2B2015]/30`}
-              />
+              className={`absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-4 ${card.tapeBg} rounded-sm rotate-[-2deg] z-10 border border-[#2B2015]/30`}
+            />
 
-              <div>
-                {/* Top Category Badge */}
-                <div className="flex items-center justify-center mb-3 pt-1">
-                  <span
-                    className={`inline-flex items-center gap-1.5 font-sans text-[10px] sm:text-[11px] font-bold px-3 py-1 rounded-full ${card.badgeBg} ${card.badgeText} tracking-tight shadow-sm`}
-                  >
-                    <span>{card.badgeIcon}</span>
-                    <span>{card.badgeLabel}</span>
+            <div>
+              {/* Top Category Badge */}
+              <div className="flex items-center justify-center mb-3 pt-1">
+                <span
+                  className={`inline-flex items-center gap-1.5 font-sans text-[11px] font-bold px-3 py-1 rounded-full ${card.badgeBg} ${card.badgeText} tracking-tight shadow-sm`}
+                >
+                  <span>{card.badgeIcon}</span>
+                  <span>{card.badgeLabel}</span>
+                </span>
+              </div>
+
+              {/* Card Title */}
+              <h3 className="font-bree font-bold text-xl text-[#2B2015] leading-snug mb-2 group-hover:text-[#E25543] transition-colors">
+                {card.title}
+              </h3>
+
+              {/* Highlight Subtitle (Colored) */}
+              <p className={`font-sans text-xs font-bold ${card.subtitleColor} leading-snug mb-3`}>
+                {card.subtitle}
+              </p>
+
+              {/* Summary Description */}
+              <p className="font-sans text-xs text-[#3E3124] leading-relaxed mb-4">
+                {card.summary}
+              </p>
+
+              {/* Ref Citation Note */}
+              <div className="font-mono text-[11px] text-[#5B4C3E] bg-[#E9D5C3]/70 px-3 py-1.5 rounded-lg border border-[#2B2015]/20 mb-4 flex items-center gap-1.5 font-semibold">
+                <FileText className="w-3.5 h-3.5 text-[#E25543] shrink-0" />
+                <span className="truncate">Ref: {card.refCitation}</span>
+              </div>
+
+              {/* 2-Column Metrics Grid */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <div className="bg-[#E9D5C3]/80 border border-[#2B2015]/20 p-2 rounded-xl text-center">
+                  <span className="font-mono text-[9px] text-[#5B4C3E] font-bold uppercase block tracking-wider truncate">
+                    {card.metric1Label}
+                  </span>
+                  <span className={`font-mono text-sm font-extrabold ${card.subtitleColor} block mt-0.5`}>
+                    {card.metric1Value}
                   </span>
                 </div>
 
-                {/* Card Title */}
-                <h3 className="font-bree font-bold text-lg sm:text-xl text-[#2B2015] leading-snug mb-2 group-hover:text-[#E25543] transition-colors">
-                  {card.title}
-                </h3>
-
-                {/* Highlight Subtitle (Colored) */}
-                <p className={`font-sans text-xs font-bold ${card.subtitleColor} leading-snug mb-3`}>
-                  {card.subtitle}
-                </p>
-
-                {/* Summary Description */}
-                <p className="font-sans text-xs text-[#3E3124] leading-relaxed mb-4">
-                  {card.summary}
-                </p>
-
-                {/* Ref Citation Note */}
-                <div className="font-mono text-[11px] text-[#5B4C3E] bg-[#E9D5C3]/70 px-3 py-1.5 rounded-lg border border-[#2B2015]/20 mb-4 flex items-center gap-1.5 font-semibold">
-                  <FileText className="w-3.5 h-3.5 text-[#E25543] shrink-0" />
-                  <span className="truncate">Ref: {card.refCitation}</span>
-                </div>
-
-                {/* 2-Column Metrics Grid */}
-                <div className="grid grid-cols-2 gap-2 mb-4">
-                  <div className="bg-[#E9D5C3]/80 border border-[#2B2015]/20 p-2 rounded-xl text-center">
-                    <span className="font-mono text-[9px] text-[#5B4C3E] font-bold uppercase block tracking-wider truncate">
-                      {card.metric1Label}
-                    </span>
-                    <span className={`font-mono text-sm font-extrabold ${card.subtitleColor} block mt-0.5`}>
-                      {card.metric1Value}
-                    </span>
-                  </div>
-
-                  <div className="bg-[#E9D5C3]/80 border border-[#2B2015]/20 p-2 rounded-xl text-center">
-                    <span className="font-mono text-[9px] text-[#5B4C3E] font-bold uppercase block tracking-wider truncate">
-                      {card.metric2Label}
-                    </span>
-                    <span className={`font-mono text-sm font-extrabold ${card.subtitleColor} block mt-0.5`}>
-                      {card.metric2Value}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Tech Stack Badges */}
-                <div className="flex flex-wrap gap-1 mb-4">
-                  {card.techTags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 rounded-md bg-[#FAF0E6] text-[#2B2015] font-mono text-[10px] font-semibold border border-[#2B2015]/20"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="bg-[#E9D5C3]/80 border border-[#2B2015]/20 p-2 rounded-xl text-center">
+                  <span className="font-mono text-[9px] text-[#5B4C3E] font-bold uppercase block tracking-wider truncate">
+                    {card.metric2Label}
+                  </span>
+                  <span className={`font-mono text-sm font-extrabold ${card.subtitleColor} block mt-0.5`}>
+                    {card.metric2Value}
+                  </span>
                 </div>
               </div>
 
-              {/* Bottom CTA Button */}
-              <div className="pt-2">
-                <button
-                  onClick={() => card.projectRef && setSelectedProject(card.projectRef)}
-                  className={`w-full py-2.5 px-3 ${card.buttonBg} ${card.buttonHoverBg} text-white rounded-xl text-xs sm:text-sm font-bold border border-[#2B2015]/30 shadow-[2px_2px_0px_#2B2015] transition-all cursor-pointer flex items-center justify-center gap-1.5`}
-                >
-                  <span>Inspect Case Study</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+              {/* Tech Stack Badges */}
+              <div className="flex flex-wrap gap-1 mb-4">
+                {card.techTags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-2 py-0.5 rounded-md bg-[#FAF0E6] text-[#2B2015] font-mono text-[10px] font-semibold border border-[#2B2015]/20"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* Bottom Line Text */}
-        <div className="mt-6 pt-4 border-t border-[#F5E1CD]/15 flex items-center justify-center text-center text-[#F5E1CD]/50 font-mono text-[11px] tracking-[0.3em] uppercase">
-          RESEARCH · BUILD · DEPLOY · DEFEND
-        </div>
+            {/* Bottom CTA Button */}
+            <div className="pt-2">
+              <button
+                onClick={() => card.projectRef && setSelectedProject(card.projectRef)}
+                className={`w-full py-2.5 px-3 ${card.buttonBg} ${card.buttonHoverBg} text-white rounded-xl text-xs sm:text-sm font-bold border border-[#2B2015]/30 shadow-[2px_2px_0px_#2B2015] hover:shadow-[3px_3px_0px_#2B2015] hover:-translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-1.5`}
+              >
+                <span>Inspect Case Study</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom Footer Note */}
+      <div className="mt-4 text-center text-[#F5E1CD]/50 font-mono text-xs tracking-[0.3em] uppercase">
+        · RESEARCH · BUILD · DEPLOY · DEFEND ·
       </div>
 
       {/* 12-Section Technical Case Study Modal */}
