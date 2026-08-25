@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { projectCaseStudies, ProjectCaseStudy } from "@/data/projects";
 import { ProjectCaseStudyModal } from "./ProjectCaseStudyModal";
-import { FileText, ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { FileText, ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
 interface ProjectDisplayCard {
   id: string;
@@ -31,10 +31,12 @@ interface ProjectDisplayCard {
 export function HorizontalProjectRail() {
   const [selectedProject, setSelectedProject] = useState<ProjectCaseStudy | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>("ALL");
+  const [isPaused, setIsPaused] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const animationRef = useRef<number | null>(null);
 
-  // Map 5 project cards exactly matching the reference image metadata
-  const cards: ProjectDisplayCard[] = [
+  // Full comprehensive array of 9 systems & projects from system and GitHub
+  const baseCards: ProjectDisplayCard[] = [
     {
       id: "dns-shield",
       categoryGroup: "cybersecurity",
@@ -46,7 +48,7 @@ export function HorizontalProjectRail() {
       subtitle: "AI/ML-Powered DNS Threat Detection with Anomaly & Real-Time TrustScore Auditing",
       subtitleColor: "text-[#E25543]",
       summary:
-        "AI-engine and DNS threat detection platform analyzing domain & packet patterns, issuing real-time TrustScores with adaptive blocking & federated threat intelligence.",
+        "Wire-speed DNS threat defense platform analyzing domain characteristics, lexical n-grams, and Shannon entropy to intercept malware C2 beaconing.",
       refCitation: "Trichy Top 10 (Nov'24)",
       metric1Label: "DETECTION ACCURACY",
       metric1Value: "< 1.2ms",
@@ -69,7 +71,7 @@ export function HorizontalProjectRail() {
       subtitle: "Decentralized, Privacy-First ML with Adaptive Model Pruning and IoT/Edge",
       subtitleColor: "text-[#4E8752]",
       summary:
-        "A robust, dual-privacy-preserving FL pipeline leveraging secure aggregation, adaptive pruning & split learning to optimize models on non-IID federated data.",
+        "A robust, dual-privacy-preserving FL pipeline leveraging secure aggregation, adaptive pruning & split learning on non-IID federated data.",
       refCitation: "Scopus Q1 (Dec'24)",
       metric1Label: "TOP-1 ACC. (FL)",
       metric1Value: "94.8%",
@@ -92,7 +94,7 @@ export function HorizontalProjectRail() {
       subtitle: "High-Throughput Binary-Edge E-Multi Attack Classifier with TrueSHAP",
       subtitleColor: "text-[#86608E]",
       summary:
-        "A dual-stage machine learning IDS with random detection & XGBoost classification for high accuracy and low latency in real-world deployments.",
+        "Dual-stage machine learning network intrusion detection system executing wire-speed binary filtering followed by multi-class attack attribution.",
       refCitation: "IJ IoT Best Paper (Jan'25)",
       metric1Label: "DETECTION RATE",
       metric1Value: "99.8%",
@@ -115,7 +117,7 @@ export function HorizontalProjectRail() {
       subtitle: "CNN-LSTM Hybrid for Multi-Label Cardiac Diagnostic Engine",
       subtitleColor: "text-[#D48C38]",
       summary:
-        "A clinical-grade cardiac diagnostic system classifying arrhythmias from 12-lead ECG signals with attention mechanism and explainable decision support.",
+        "Clinical-grade cardiac diagnostic system converting raw 12-lead ECG signals into CWT scalograms for multi-label arrhythmia classification.",
       refCitation: "PhysioNet 2024 (May'25)",
       metric1Label: "CLASSIFICATION ACC.",
       metric1Value: "97.1%",
@@ -138,7 +140,7 @@ export function HorizontalProjectRail() {
       subtitle: "Smart Engagement Platform with JWT Auth, Role Control & QR Check-In",
       subtitleColor: "text-[#4E9388]",
       summary:
-        "A production-ready campus event management system with secure RSVP, role-based access, and real-time participation tracking.",
+        "Production-ready campus event management platform handling real-time ticket registration, Redis inventory locks, and QR check-ins.",
       refCitation: "RVCE Campus Hack 2024",
       metric1Label: "REGISTERED USERS",
       metric1Value: "5,000+",
@@ -150,12 +152,105 @@ export function HorizontalProjectRail() {
       buttonHoverBg: "hover:bg-[#3B776D]",
       projectRef: projectCaseStudies.find((p) => p.id === "campus-events-platform") || projectCaseStudies[4],
     },
+    {
+      id: "mobile-robotics",
+      categoryGroup: "ai-systems",
+      badgeIcon: "🤖",
+      badgeLabel: "IOT & ROBOTICS",
+      badgeBg: "bg-[#FADBD8]",
+      badgeText: "text-[#922B21]",
+      title: "Mobile-Controlled Cyber-Physical Robot",
+      subtitle: "Real-Time Dual-Motor Drive Control with Sub-15ms Actuation",
+      subtitleColor: "text-[#E25543]",
+      summary:
+        "Real-time dual-motor drive control over local Wi-Fi/Bluetooth stream with sub-15ms actuation latency and fail-safe disconnect hardware protocols.",
+      refCitation: "Hardware Lab Bench (2024)",
+      metric1Label: "ACTUATION LATENCY",
+      metric1Value: "< 15ms",
+      metric2Label: "BAUD RATE",
+      metric2Value: "115,200",
+      techTags: ["ESP32", "C++ Firmware", "L298N", "Telemetry", "Wi-Fi"],
+      tapeBg: "bg-[#E25543]/70",
+      buttonBg: "bg-[#E25543]",
+      buttonHoverBg: "hover:bg-[#C84332]",
+      projectRef: projectCaseStudies[0],
+    },
+    {
+      id: "driver-drowsiness",
+      categoryGroup: "ai-systems",
+      badgeIcon: "👁️",
+      badgeLabel: "EDGE CV & SAFETY",
+      badgeBg: "bg-[#D4EFDF]",
+      badgeText: "text-[#1E8449]",
+      title: "Driver Drowsiness & Eye-Blink Edge Alert",
+      subtitle: "Eye Aspect Ratio (EAR) & Head-Pose Telemetry Engine at 30 FPS",
+      subtitleColor: "text-[#4E8752]",
+      summary:
+        "Computer vision edge node computing Eye Aspect Ratio (EAR) and head-pose telemetry at 30 FPS, triggering instant acoustic alarms upon micro-sleep.",
+      refCitation: "Edge CV Field Test (2024)",
+      metric1Label: "FRAME RATE",
+      metric1Value: "30 FPS",
+      metric2Label: "EAR PRECISION",
+      metric2Value: "98.2%",
+      techTags: ["OpenCV", "Python", "EAR Metric", "Edge Vision", "Buzzer Alarm"],
+      tapeBg: "bg-[#5B8C69]/70",
+      buttonBg: "bg-[#5B8C69]",
+      buttonHoverBg: "hover:bg-[#477353]",
+      projectRef: projectCaseStudies[3],
+    },
+    {
+      id: "iomt-federated",
+      categoryGroup: "research",
+      badgeIcon: "⚡",
+      badgeLabel: "RESEARCH FELLOW",
+      badgeBg: "bg-[#E8DAEF]",
+      badgeText: "text-[#6C3483]",
+      title: "Split Federated IoMT Privacy Pipeline",
+      subtitle: "Privacy-Preserving Edge Diagnostic Learning at IIIT Trichy",
+      subtitleColor: "text-[#86608E]",
+      summary:
+        "Decentralized Split-FL pipeline preventing gradient inversion and activation leakages on medical Internet-of-Things (IoMT) hardware.",
+      refCitation: "IIIT Trichy Research (2024)",
+      metric1Label: "DATA PRIVACY",
+      metric1Value: "100% Zero Leak",
+      metric2Label: "BANDWIDTH SAVINGS",
+      metric2Value: "-65%",
+      techTags: ["PyTorch", "IoMT", "Split Learning", "Differential Privacy"],
+      tapeBg: "bg-[#86608E]/70",
+      buttonBg: "bg-[#86608E]",
+      buttonHoverBg: "hover:bg-[#6D4C74]",
+      projectRef: projectCaseStudies[1],
+    },
+    {
+      id: "zarthi-microservices",
+      categoryGroup: "full-stack",
+      badgeIcon: "⚙️",
+      badgeLabel: "JAVA & BACKEND",
+      badgeBg: "bg-[#FCF3CF]",
+      badgeText: "text-[#B7950B]",
+      title: "High-Throughput Java Microservices Suite",
+      subtitle: "Asynchronous REST Event Pipelines & Redis Cache Architecture",
+      subtitleColor: "text-[#D48C38]",
+      summary:
+        "High-performance Java & Spring Boot microservices built during Zarthi internship, handling deterministic execution under heavy concurrent load.",
+      refCitation: "Zarthi Internship (2024)",
+      metric1Label: "THROUGHPUT",
+      metric1Value: "10,000+ QPS",
+      metric2Label: "API LATENCY",
+      metric2Value: "< 5ms",
+      techTags: ["Java", "Spring Boot", "FastAPI", "Redis", "PostgreSQL"],
+      tapeBg: "bg-[#D48C38]/70",
+      buttonBg: "bg-[#D48C38]",
+      buttonHoverBg: "hover:bg-[#B7762A]",
+      projectRef: projectCaseStudies[4],
+    },
   ];
 
-  const filteredCards =
+  // Filter base cards according to selected category
+  const filteredBase =
     activeFilter === "ALL"
-      ? cards
-      : cards.filter((c) => {
+      ? baseCards
+      : baseCards.filter((c) => {
           if (activeFilter === "cybersecurity") return c.categoryGroup === "cybersecurity";
           if (activeFilter === "ai-systems") return c.categoryGroup === "ai-systems";
           if (activeFilter === "full-stack") return c.categoryGroup === "full-stack";
@@ -163,15 +258,47 @@ export function HorizontalProjectRail() {
           return true;
         });
 
-  const scroll = (direction: "left" | "right") => {
+  // Duplicate cards for seamless infinite looping (3x duplication for smooth infinite scroll wrap)
+  const loopedCards = [...filteredBase, ...filteredBase, ...filteredBase];
+
+  // Continuous Seamless Infinite Auto-Scroll Engine
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let speed = 0.7; // Pixels per frame smooth scroll speed
+
+    const step = () => {
+      if (!isPaused && el) {
+        el.scrollLeft += speed;
+
+        // When scrolled past one full set of cards, seamlessly wrap back to start without visual jump!
+        const maxSingleScroll = el.scrollWidth / 3;
+        if (el.scrollLeft >= maxSingleScroll * 2) {
+          el.scrollLeft -= maxSingleScroll;
+        } else if (el.scrollLeft <= 0) {
+          el.scrollLeft += maxSingleScroll;
+        }
+      }
+      animationRef.current = requestAnimationFrame(step);
+    };
+
+    animationRef.current = requestAnimationFrame(step);
+
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, [isPaused, activeFilter, filteredBase.length]);
+
+  const scrollByAmount = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = direction === "left" ? -360 : 360;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      const amount = direction === "left" ? -360 : 360;
+      scrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
     }
   };
 
   return (
-    <section id="projects" className="py-16 px-4 sm:px-6 max-w-[1450px] mx-auto">
+    <section id="projects" className="py-16 px-4 sm:px-6 max-w-[1500px] mx-auto overflow-hidden">
       {/* Section Top Tagline & Main Title */}
       <div className="flex flex-col items-center text-center mb-8">
         <span className="font-mono text-xs sm:text-sm font-bold tracking-[0.25em] uppercase text-[#D4BAA3]/80 mb-3 flex items-center gap-2">
@@ -186,12 +313,12 @@ export function HorizontalProjectRail() {
           Click &apos;Inspect Case Study&apos; to deep dive any project module and explore the architecture, research &amp; impact.
         </p>
 
-        {/* Filter Pills & Scroll Controls */}
+        {/* Filter Pills & Controls */}
         <div className="flex flex-wrap items-center justify-between w-full max-w-5xl gap-4 mt-8 px-2">
-          {/* Filter Pills */}
+          {/* Category Filter Pills */}
           <div className="flex flex-wrap items-center gap-2">
             {[
-              { id: "ALL", label: "All Systems (5)" },
+              { id: "ALL", label: `All Systems (${baseCards.length})` },
               { id: "cybersecurity", label: "Cybersecurity & Threat Intel" },
               { id: "ai-systems", label: "Edge AI & Healthcare Systems" },
               { id: "full-stack", label: "High Throughput Web & CI/CD" },
@@ -211,18 +338,27 @@ export function HorizontalProjectRail() {
             ))}
           </div>
 
-          {/* Interactive Scroll Navigation Arrows */}
+          {/* Interactive Infinite Ticker Controls (Pause/Play & Navigation Arrows) */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => scroll("left")}
-              className="p-2.5 rounded-full bg-[#2B2015]/60 text-[#F5E1CD] border border-[#F5E1CD]/20 hover:bg-[#E25543] hover:text-white transition-all cursor-pointer shadow-md"
+              onClick={() => setIsPaused(!isPaused)}
+              className="p-2.5 rounded-full bg-[#2B2015]/70 text-[#F5E1CD] border border-[#F5E1CD]/20 hover:bg-[#E25543] hover:text-white transition-all cursor-pointer shadow-md flex items-center gap-1.5 px-3 text-xs font-mono"
+              title={isPaused ? "Resume Auto Scroll" : "Pause Auto Scroll"}
+            >
+              {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+              <span>{isPaused ? "Play" : "Pause"}</span>
+            </button>
+
+            <button
+              onClick={() => scrollByAmount("left")}
+              className="p-2.5 rounded-full bg-[#2B2015]/70 text-[#F5E1CD] border border-[#F5E1CD]/20 hover:bg-[#E25543] hover:text-white transition-all cursor-pointer shadow-md"
               title="Scroll Left"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
-              onClick={() => scroll("right")}
-              className="p-2.5 rounded-full bg-[#2B2015]/60 text-[#F5E1CD] border border-[#F5E1CD]/20 hover:bg-[#E25543] hover:text-white transition-all cursor-pointer shadow-md"
+              onClick={() => scrollByAmount("right")}
+              className="p-2.5 rounded-full bg-[#2B2015]/70 text-[#F5E1CD] border border-[#F5E1CD]/20 hover:bg-[#E25543] hover:text-white transition-all cursor-pointer shadow-md"
               title="Scroll Right"
             >
               <ChevronRight className="w-4 h-4" />
@@ -231,18 +367,18 @@ export function HorizontalProjectRail() {
         </div>
       </div>
 
-      {/* Smooth Animated Horizontal Cards Scroll Rail */}
+      {/* Seamless Infinite Looping Horizontal Scroll Container */}
       <div
         ref={scrollRef}
-        className="flex gap-5 overflow-x-auto pb-8 pt-4 px-2 scrollbar-none scroll-smooth snap-x snap-mandatory"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        className="flex gap-5 overflow-x-auto pb-8 pt-4 px-2 scrollbar-none cursor-grab active:cursor-grabbing select-none"
+        style={{ scrollBehavior: "auto" }}
       >
-        {filteredCards.map((card, idx) => (
+        {loopedCards.map((card, idx) => (
           <div
-            key={card.id}
-            className="w-full sm:w-[320px] md:w-[335px] shrink-0 snap-start bg-[#F5E1CD] text-[#2B2015] border-[3px] border-[#2B2015] rounded-[24px] p-5 flex flex-col justify-between relative shadow-[5px_5px_0px_#2B2015] transition-all duration-300 hover:-translate-y-2 hover:rotate-1 hover:shadow-[9px_9px_0px_#2B2015] group min-h-[530px]"
-            style={{
-              animationDelay: `${idx * 120}ms`,
-            }}
+            key={`${card.id}-dup-${idx}`}
+            className="w-full sm:w-[325px] md:w-[340px] shrink-0 bg-[#F5E1CD] text-[#2B2015] border-[3px] border-[#2B2015] rounded-[24px] p-5 flex flex-col justify-between relative shadow-[5px_5px_0px_#2B2015] transition-all duration-300 hover:-translate-y-2.5 hover:rotate-1 hover:shadow-[9px_9px_0px_#2B2015] group min-h-[530px]"
           >
             {/* Top Washi Tape */}
             <div
@@ -330,8 +466,10 @@ export function HorizontalProjectRail() {
       </div>
 
       {/* Bottom Footer Note */}
-      <div className="mt-4 text-center text-[#F5E1CD]/50 font-mono text-xs tracking-[0.3em] uppercase">
-        · RESEARCH · BUILD · DEPLOY · DEFEND ·
+      <div className="mt-4 text-center text-[#F5E1CD]/50 font-mono text-xs tracking-[0.3em] uppercase flex items-center justify-center gap-2">
+        <span>· CONTINUOUS STREAM</span>
+        <span>·</span>
+        <span>RESEARCH · BUILD · DEPLOY · DEFEND ·</span>
       </div>
 
       {/* 12-Section Technical Case Study Modal */}
