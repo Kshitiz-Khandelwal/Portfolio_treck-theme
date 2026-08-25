@@ -1,9 +1,11 @@
 import { Navbar } from "@/components/Navbar";
 import { BackgroundEffects } from "@/components/BackgroundEffects";
 import { Hero } from "@/components/Hero";
+import { HowIBuild } from "@/components/HowIBuild";
+import { HorizontalProjectRail } from "@/components/HorizontalProjectRail";
 import { Footer } from "@/components/Footer";
 import Link from "next/link";
-import { GraduationCap, Code2, Cpu, Award, Mail, ArrowRight, ShieldCheck, Sparkles, Terminal } from "lucide-react";
+import { GraduationCap, Code2, Cpu, Award, Mail, ArrowRight, Sparkles } from "lucide-react";
 
 export const metadata = {
   title: "Kshitiz Khandelwal | Backend & Systems Engineer",
@@ -20,7 +22,6 @@ export default function Home() {
       icon: GraduationCap,
       description:
         "BMSIT Top Scholar (9.43 CGPA), Zarthi Backend Intern (Java/Spring Boot), and IIIT Trichy Research Fellow (Split FL on IoMT).",
-      accentColor: "border-[#E25543] text-[#E25543]",
       badgeBg: "bg-[#FADBD8] text-[#922B21]",
       buttonBg: "bg-[#E25543] hover:bg-[#C84332]",
     },
@@ -31,7 +32,6 @@ export default function Home() {
       icon: Code2,
       description:
         "Interactive 9-system infinite rail with 12-section technical case study whitepapers, DNS Shield AI, and TON_IoT intrusion engines.",
-      accentColor: "border-[#5B8C69] text-[#5B8C69]",
       badgeBg: "bg-[#D4EFDF] text-[#1E8449]",
       buttonBg: "bg-[#5B8C69] hover:bg-[#477353]",
     },
@@ -42,7 +42,6 @@ export default function Home() {
       icon: Cpu,
       description:
         "Interactive architecture workstations, live pipeline visualizers, and engineering mental model mindmaps.",
-      accentColor: "border-[#86608E] text-[#86608E]",
       badgeBg: "bg-[#E8DAEF] text-[#6C3483]",
       buttonBg: "bg-[#86608E] hover:bg-[#6D4C74]",
     },
@@ -53,7 +52,6 @@ export default function Home() {
       icon: Award,
       description:
         "Verified certificate viewer modal, ISRO & SIH 2024 national hackathon awards, playable IoT video proofs, and recommendations.",
-      accentColor: "border-[#D48C38] text-[#D48C38]",
       badgeBg: "bg-[#FCF3CF] text-[#B7950B]",
       buttonBg: "bg-[#D48C38] hover:bg-[#B7762A]",
     },
@@ -64,7 +62,6 @@ export default function Home() {
       icon: Mail,
       description:
         "Dispatch a direct message to Kshitiz for Backend, Systems, and Edge AI engineering roles.",
-      accentColor: "border-[#4E9388] text-[#4E9388]",
       badgeBg: "bg-[#D1F2EB] text-[#117A65]",
       buttonBg: "bg-[#4E9388] hover:bg-[#3B776D]",
     },
@@ -76,7 +73,7 @@ export default function Home() {
       <Navbar />
 
       {/* Main Executive Hero Hub */}
-      <div className="pt-24 sm:pt-28 pb-12 relative z-10">
+      <div className="pt-24 sm:pt-28 pb-6 relative z-10">
         <Hero />
 
         {/* Paged Navigation Portal Hub */}
@@ -88,7 +85,7 @@ export default function Home() {
             <h2 className="font-bree text-3xl sm:text-4xl md:text-5xl text-[#F5E1CD] font-bold">
               Explore Portfolio Pages
             </h2>
-            <p className="font-sans text-sm sm:text-base text-[#D4BAA3] mt-2 max-w-xl mx-auto">
+            <p className="font-sans text-sm sm:text-base text-[#D4BAA3] mt-2 max-w-xl mx-auto leading-relaxed">
               Select any page below to explore complete detailed whitepapers, workstation visualizers, and credentials without long page scrolling.
             </p>
           </div>
@@ -140,6 +137,12 @@ export default function Home() {
             })}
           </div>
         </section>
+
+        {/* Handcrafted Engineering Mindmap Section (How I Approach Things) */}
+        <HowIBuild />
+
+        {/* 9-System Infinite Ticker Marquee Preview */}
+        <HorizontalProjectRail />
       </div>
 
       <Footer />
