@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
-import { Sparkles, Zap, Puzzle, Cpu, Rocket, Network, Star, ArrowRight, Layers, Database, Activity, Target } from "lucide-react";
+import { Sparkles, Network, ArrowRight } from "lucide-react";
 
 // Realistic 3D Push Pin Component
 function PushPin({ color = "red", className = "" }: { color?: "red" | "coral" | "gold" | "green" | "purple"; className?: string }) {
@@ -40,6 +39,71 @@ function PushPin({ color = "red", className = "" }: { color?: "red" | "coral" | 
     </div>
   );
 }
+
+// Hand-Drawn Sketch Icon Components (No emojis / No AI look)
+const HandDrawnBrain = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9.5 2A3.5 3.5 0 0 0 6 5.5c0 1.4.8 2.6 2 3.1A3.5 3.5 0 0 0 4 12c0 1.9 1.5 3.5 3.5 3.5.3 0 .7 0 1-.1A3.5 3.5 0 0 0 12 18.5V20" />
+    <path d="M14.5 2A3.5 3.5 0 0 1 18 5.5c0 1.4-.8 2.6-2 3.1A3.5 3.5 0 0 1 20 12c0 1.9-1.5 3.5-3.5 3.5-.3 0-.7 0-1-.1A3.5 3.5 0 0 1 12 18.5" />
+    <path d="M12 4v8" />
+    <path d="M9.5 9a2.5 2.5 0 0 1 0 5" />
+    <path d="M14.5 9a2.5 2.5 0 0 0 0 5" />
+  </svg>
+);
+
+const HandDrawnCube = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m21 16-9 5-9-5V8l9-5 9 5v8Z" />
+    <path d="m3.27 6.96 8.73 4.84 8.73-4.84" />
+    <path d="M12 22.08V12" />
+  </svg>
+);
+
+const HandDrawnDB = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <ellipse cx="12" cy="5" rx="9" ry="3" />
+    <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
+    <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
+  </svg>
+);
+
+const HandDrawnScale = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m3 17 6-6 4 4 8-8" />
+    <path d="M14 7h7v7" />
+  </svg>
+);
+
+const HandDrawnLightning = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M13 2 L3 14 L12 14 L11 22 L21 10 L12 10 Z" />
+  </svg>
+);
+
+const HandDrawnPuzzle = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.47 1.23 0 1.7l-1.568 1.568c-.23.23-.338.556-.289.878.17 1.137-.738 2.045-1.875 1.875-.322-.049-.648.059-.878.289l-1.568 1.568c-.47.47-1.23.47-1.7 0l-1.568-1.568c-.23-.23-.556-.338-.878-.289-1.137.17-2.045-.738-1.875-1.875.049-.322-.059-.648-.289-.878L5.7 12c-.47-.47-.47-1.23 0-1.7l1.568-1.568c.23-.23.338-.556.289-.878-.17-1.137.738-2.045 1.875-1.875.322.049.648-.059.878-.289L11.878 4c.47-.47 1.23-.47 1.7 0l1.568 1.568c.23.23.556.338.878.289 1.137-.17 2.045.738 1.875 1.875Z" />
+  </svg>
+);
+
+const HandDrawnTarget = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="12" cy="12" r="6" />
+    <circle cx="12" cy="12" r="2" />
+    <path d="M12 2v4" />
+    <path d="M12 18v4" />
+    <path d="M2 12h4" />
+    <path d="M18 12h4" />
+  </svg>
+);
+
+const HandDrawnRocket = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+    <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-3.05 11a22.35 22.35 0 0 1-3.95 2z" />
+  </svg>
+);
 
 export function HowIBuild() {
   const [activeNote, setActiveNote] = useState<string | null>("research");
@@ -107,21 +171,13 @@ export function HowIBuild() {
           </p>
         </div>
 
-        {/* Top Right Instruction Note & Polaroid */}
+        {/* Top Right Instruction Note */}
         <div className="flex items-center gap-4">
-          <div className="bg-[#FCF3CF] text-[#2B2015] border-2 border-[#2B2015] rounded-xl p-3 shadow-[3px_3px_0px_#2B2015] rotate-[-2deg] max-w-[200px] relative">
+          <div className="bg-[#FCF3CF] text-[#2B2015] border-2 border-[#2B2015] rounded-xl p-3 shadow-[3px_3px_0px_#2B2015] rotate-[-2deg] max-w-[220px] relative">
             <div className="washi-tape-coral -top-3 left-3 rotate-[4deg] !w-12 !h-3" />
             <p className="font-gochi text-xs text-[#2B2015] leading-snug font-bold">
               📌 Click any note to read my engineering rationale
             </p>
-          </div>
-
-          {/* Polaroid Lab Photo */}
-          <div className="relative bg-white border-2 border-[#2B2015] p-1.5 pb-5 rounded-md shadow-md rotate-[6deg] w-24 sm:w-28 hidden sm:block">
-            <div className="relative w-full h-20 bg-slate-200 rounded-sm overflow-hidden">
-              <Image src="/profile.jpg" alt="Lab Bench" fill className="object-cover" />
-            </div>
-            <p className="font-gochi text-[9px] text-[#2B2015] text-center mt-1 font-bold">Lab Bench &apos;24</p>
           </div>
         </div>
       </div>
@@ -198,7 +254,7 @@ export function HowIBuild() {
             </div>
           </div>
 
-          {/* Row 2: Architecture + 4 Sticky Note Branches */}
+          {/* Row 2: Architecture + 4 Hand-Drawn Sketch Icon Sticky Branches */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-2">
             {/* Architecture Card with Binder Clip */}
             <div className="lg:col-span-5 relative flex items-center">
@@ -232,7 +288,7 @@ export function HowIBuild() {
               <span className="hidden lg:inline-block font-mono text-xl text-[#2B2015] font-bold mx-3">➔</span>
             </div>
 
-            {/* 4 Pastel Sticky Notes Side-by-Side */}
+            {/* 4 Pastel Sticky Notes with Hand-Drawn Vector Icons */}
             <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-3">
               {/* Pink Sticky: AI? */}
               <div
@@ -242,7 +298,10 @@ export function HowIBuild() {
                 onClick={() => setActiveNote("ai")}
               >
                 <PushPin color="red" className="-top-2.5 scale-90" />
-                <span className="font-bree font-bold text-base text-[#922B21] block mt-1">🧠 AI?</span>
+                <div className="flex justify-center text-[#922B21] mt-1 mb-0.5">
+                  <HandDrawnBrain className="w-5 h-5" />
+                </div>
+                <span className="font-bree font-bold text-base text-[#922B21] block">AI?</span>
                 <span className="font-gochi text-[11px] text-[#2B2015] font-semibold block">Heuristics vs DNN</span>
               </div>
 
@@ -254,7 +313,10 @@ export function HowIBuild() {
                 onClick={() => setActiveNote("model")}
               >
                 <PushPin color="gold" className="-top-2.5 scale-90" />
-                <span className="font-bree font-bold text-base text-[#B7950B] block mt-1">🧊 Model?</span>
+                <div className="flex justify-center text-[#B7950B] mt-1 mb-0.5">
+                  <HandDrawnCube className="w-5 h-5" />
+                </div>
+                <span className="font-bree font-bold text-base text-[#B7950B] block">Model?</span>
                 <span className="font-gochi text-[11px] text-[#2B2015] font-semibold block">LightGBM &lt;1.2ms</span>
               </div>
 
@@ -266,7 +328,10 @@ export function HowIBuild() {
                 onClick={() => setActiveNote("db")}
               >
                 <PushPin color="green" className="-top-2.5 scale-90" />
-                <span className="font-bree font-bold text-base text-[#1E8449] block mt-1">🗄️ DB?</span>
+                <div className="flex justify-center text-[#1E8449] mt-1 mb-0.5">
+                  <HandDrawnDB className="w-5 h-5" />
+                </div>
+                <span className="font-bree font-bold text-base text-[#1E8449] block">DB?</span>
                 <span className="font-gochi text-[11px] text-[#2B2015] font-semibold block">Zero-copy vs SQL</span>
               </div>
 
@@ -278,7 +343,10 @@ export function HowIBuild() {
                 onClick={() => setActiveNote("scale")}
               >
                 <PushPin color="purple" className="-top-2.5 scale-90" />
-                <span className="font-bree font-bold text-base text-[#6C3483] block mt-1">📈 Scale?</span>
+                <div className="flex justify-center text-[#6C3483] mt-1 mb-0.5">
+                  <HandDrawnScale className="w-5 h-5" />
+                </div>
+                <span className="font-bree font-bold text-base text-[#6C3483] block">Scale?</span>
                 <span className="font-gochi text-[11px] text-[#2B2015] font-semibold block">100K req/sec load</span>
               </div>
             </div>
@@ -296,7 +364,7 @@ export function HowIBuild() {
               >
                 <PushPin color="coral" />
                 <div className="w-10 h-10 rounded-full bg-[#E25543] text-white flex items-center justify-center shrink-0">
-                  <Zap className="w-5 h-5 fill-current" />
+                  <HandDrawnLightning className="w-5 h-5" />
                 </div>
                 <div className="text-left flex-1 min-w-0">
                   <h4 className="font-bree font-bold text-base text-[#2B2015]">
@@ -317,7 +385,7 @@ export function HowIBuild() {
               >
                 <PushPin color="gold" />
                 <div className="w-10 h-10 rounded-full bg-[#D48C38] text-white flex items-center justify-center shrink-0">
-                  <Puzzle className="w-5 h-5" />
+                  <HandDrawnPuzzle className="w-5 h-5" />
                 </div>
                 <div className="text-left flex-1 min-w-0">
                   <h4 className="font-bree font-bold text-base text-[#2B2015]">
@@ -338,7 +406,7 @@ export function HowIBuild() {
               >
                 <PushPin color="green" />
                 <div className="w-10 h-10 rounded-full bg-[#5B8C69] text-white flex items-center justify-center shrink-0">
-                  <Target className="w-5 h-5" />
+                  <HandDrawnTarget className="w-5 h-5" />
                 </div>
                 <div className="text-left flex-1 min-w-0">
                   <h4 className="font-bree font-bold text-base text-[#2B2015]">
@@ -359,7 +427,7 @@ export function HowIBuild() {
               >
                 <PushPin color="purple" />
                 <div className="w-10 h-10 rounded-full bg-[#86608E] text-white flex items-center justify-center shrink-0">
-                  <Rocket className="w-5 h-5" />
+                  <HandDrawnRocket className="w-5 h-5" />
                 </div>
                 <div className="text-left flex-1 min-w-0">
                   <h4 className="font-bree font-bold text-base text-[#2B2015]">
